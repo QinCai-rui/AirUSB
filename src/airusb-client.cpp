@@ -101,13 +101,15 @@ int main(int argc, char* argv[]) {
         std::cout << "Attaching device " << device_id << " (busid: " << attach_busid << ")..." << std::endl;
         
         if (client.attach_device(device_id)) {
-            std::cout << "Device attached successfully" << std::endl;
+            std::cout << "Device attached successfully at network level" << std::endl;
             
             // Create virtual USB device
-            auto virtual_device = std::make_shared<VirtualUsbDevice>(target_device, -1); // Socket will be managed by client
+            auto virtual_device = std::make_shared<VirtualUsbDevice>(target_device, -1);
             
             // Initialize kernel driver interface
             KernelUsbDriver kernel_driver;
+            kernel_driver.set_server_ip(server_ip);
+            
             if (!kernel_driver.initialize()) {
                 std::cerr << "Failed to initialize kernel driver interface" << std::endl;
                 client.detach_device(device_id);
@@ -115,27 +117,32 @@ int main(int argc, char* argv[]) {
                 return 1;
             }
             
-            // Register virtual device with kernel
+            // Register virtual device with kernel (uses USB/IP)
             if (kernel_driver.register_device(virtual_device)) {
-                std::cout << "\nDevice is now available on this system!" << std::endl;
-                std::cout << "You can check with: lsusb or lsblk" << std::endl;
-                std::cout << "Press Ctrl+C to detach and exit" << std::endl;
+                std::cout << "\n✓ Success! Device is now available on this system!" << std::endl;
+                std::cout << "  You can now access it with: lsusb, lsblk, or mount" << std::endl;
+                std::cout << "\nPress Ctrl+C to detach and exit" << std::endl;
                 
-                // Keep running and handle device I/O
+                // Keep running
                 while (client.is_connected()) {
                     std::this_thread::sleep_for(std::chrono::seconds(1));
                 }
                 
                 // Cleanup
+                std::cout << "\nDetaching device..." << std::endl;
                 kernel_driver.unregister_device(device_id);
+                client.detach_device(device_id);
             } else {
-                std::cerr << "Failed to register virtual USB device with kernel" << std::endl;
-                std::cerr << "Make sure vhci_hcd module is loaded: sudo modprobe vhci-hcd" << std::endl;
-                std::cerr << "And you have appropriate permissions (try with sudo)" << std::endl;
+                std::cerr << "\nFailed to attach device to kernel" << std::endl;
+                std::cerr << "\nMake sure on the SERVER you have:" << std::endl;
+                std::cerr << "  1. Bound the device: sudo usbip bind -b " << attach_busid << std::endl;
+                std::cerr << "  2. Started usbipd: sudo usbipd -D" << std::endl;
+                std::cerr << "\nOr run the automated server setup:" << std::endl;
+                std::cerr << "  sudo ./scripts/setup-usbip-server.sh" << std::endl;
                 client.detach_device(device_id);
             }
         } else {
-            std::cerr << "Failed to attach device" << std::endl;
+            std::cerr << "Failed to attach device at network level" << std::endl;
         }
     }
     

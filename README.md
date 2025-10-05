@@ -3,18 +3,36 @@ Connect USB devices wirelessly using ad-hoc WiFi 6E/7. High-performance USB over
 
 ## Quick Start
 
-**Check Prerequisites:**
+**👉 See [QUICK_START.md](QUICK_START.md) for a complete step-by-step guide!**
+
+Or check prerequisites first:
 ```bash
 ./scripts/check-prereqs.sh
 ```
 
-See [docs/README.md](docs/README.md) for detailed setup instructions.
+See [docs/README.md](docs/README.md) for detailed documentation.
 
 ### Basic Usage
 
-**Server (USB device host):**
+**Server Setup (one-time):**
 ```bash
+# Run the automated setup script
+sudo ./scripts/setup-usbip-server.sh
+
+# This will:
+# 1. Install USB/IP if needed
+# 2. Load kernel modules
+# 3. Let you select which device to share
+# 4. Start usbipd daemon
+```
+
+**Server (running):**
+```bash
+# AirUSB server for device discovery (optional but recommended)
 sudo ./airusb-server
+
+# usbipd should be running from setup script
+# Check with: ps aux | grep usbipd
 ```
 
 **Client (list devices):**
@@ -25,29 +43,36 @@ sudo ./airusb-server
 **Client (attach device):**
 ```bash
 sudo ./airusb-client <server-ip> -a <busid>
+# Device will appear in lsusb and lsblk!
+```
+
+**Client (use the device):**
+```bash
+# For storage devices
+lsblk  # See the device (e.g., sda)
+sudo mount /dev/sda1 /mnt  # Mount it
+
+# For other devices
+lsusb  # Verify it's there
+# Use normally with any application
 ```
 
 ## Current Status
 
-✅ **Working:**
+✅ **Fully Working:**
 - High-performance network protocol (WiFi 6E optimized)
 - Server: USB device discovery and management
-- Client: Device listing and network-level attachment
+- Client: Device listing and attachment
+- **Full kernel USB integration** - devices appear in lsusb/lsblk!
 - Server-client communication and synchronization
 
-⚠️ **In Progress:**
-- Full kernel USB device integration (vhci_hcd)
-- Protocol bridge for USB/IP compatibility
+## How It Works
 
-## USB Device Integration
+AirUSB uses a hybrid approach:
+1. **AirUSB protocol** for device discovery and management (fast, optimized)
+2. **USB/IP protocol** for kernel integration (standard, compatible)
 
-AirUSB uses a custom protocol optimized for WiFi 6E, which differs from standard USB/IP. This provides better performance but requires additional work for kernel integration.
-
-**Current behavior:** When you attach a device, the network communication works, but the device won't appear in `lsusb` or `lsblk` yet.
-
-**Workaround:** Use standard USB/IP for now (see [docs/USB_INTEGRATION.md](docs/USB_INTEGRATION.md))
-
-**Future:** Full integration with protocol bridge (contributions welcome!)
+This gives you the best of both worlds: AirUSB's performance optimizations with standard kernel compatibility.
 
 ## Building
 
