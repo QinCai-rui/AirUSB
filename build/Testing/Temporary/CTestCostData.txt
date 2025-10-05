@@ -1,4 +1,0 @@
-protocol_test 1 0.0053719
-bandwidth_test 1 11.1056
-latency_test 1 10.9107
----
