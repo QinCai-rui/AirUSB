@@ -600,43 +600,27 @@ int KernelUsbDriver::find_free_vhci_port() {
 bool KernelUsbDriver::attach_to_vhci(std::shared_ptr<VirtualUsbDevice> device) {
     const DeviceInfo& info = device->get_info();
     
-    // Find a free vhci port
-    int port = find_free_vhci_port();
-    if (port < 0) {
-        std::cerr << "No free vhci ports available" << std::endl;
-        return false;
-    }
+    std::cerr << "\n=== USB Kernel Integration Status ===" << std::endl;
+    std::cerr << "Device successfully attached at protocol level:" << std::endl;
+    std::cerr << "  Busid: " << info.busid << std::endl;
+    std::cerr << "  Vendor:Product: " << std::hex << info.vendor_id << ":" << info.product_id << std::dec << std::endl;
+    std::cerr << "  Description: " << info.manufacturer << " " << info.product << std::endl;
+    std::cerr << "\nNote: Full kernel USB integration (vhci_hcd) requires protocol translation." << std::endl;
+    std::cerr << "AirUSB protocol differs from standard USB/IP for performance optimization." << std::endl;
+    std::cerr << "\nFor immediate USB device access, use standard USB/IP:" << std::endl;
+    std::cerr << "  Server: sudo usbip bind -b " << info.busid << " && sudo usbipd -D" << std::endl;
+    std::cerr << "  Client: sudo usbip attach -r <server-ip> -b " << info.busid << std::endl;
+    std::cerr << "\nSee docs/USB_INTEGRATION.md for more details." << std::endl;
+    std::cerr << "======================================\n" << std::endl;
     
-    // Write to vhci_hcd attach file
-    // Format: port devid speed
-    // Where devid is (busnum << 16) | devnum
-    uint32_t devid = (info.bus_num << 16) | info.device_num;
-    uint32_t speed = info.device_speed;
+    // TODO: Implement protocol bridge for full integration
+    // This requires:
+    // 1. Creating a socketpair for protocol translation
+    // 2. One socket speaks USB/IP protocol to vhci_hcd
+    // 3. Other socket translates to/from AirUSB protocol
+    // 4. Background thread handles URB forwarding
     
-    std::ofstream attach("/sys/devices/platform/vhci_hcd.0/attach");
-    if (!attach.is_open()) {
-        attach.open("/sys/devices/platform/vhci_hcd/attach");
-    }
-    
-    if (!attach.is_open()) {
-        std::cerr << "Failed to open vhci_hcd attach file" << std::endl;
-        std::cerr << "Make sure you have the necessary permissions (try with sudo)" << std::endl;
-        return false;
-    }
-    
-    attach << port << " " << devid << " " << speed << std::endl;
-    attach.close();
-    
-    if (attach.fail()) {
-        std::cerr << "Failed to write to vhci_hcd attach file" << std::endl;
-        return false;
-    }
-    
-    // Store the port number for later detachment
-    vhci_port_map_[device->get_device_id()] = port;
-    
-    std::cout << "Attached device to vhci port " << port << std::endl;
-    return true;
+    return false;
 }
 
 bool KernelUsbDriver::detach_from_vhci(uint32_t device_id) {
