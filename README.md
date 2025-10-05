@@ -3,6 +3,11 @@ Connect USB devices wirelessly using ad-hoc WiFi 6E/7. High-performance USB over
 
 ## Quick Start
 
+**Check Prerequisites:**
+```bash
+./scripts/check-prereqs.sh
+```
+
 See [docs/README.md](docs/README.md) for detailed setup instructions.
 
 ### Basic Usage
