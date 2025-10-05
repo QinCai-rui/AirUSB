@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -DLOW_LATENCY_MODE=1 -DMAX_BANDWIDTH_GBPS=6 -DWIFI6E_OPTIMIZED=1
 
-CXX_INCLUDES = -I/home/qincai/AirUSB/src -I/usr/include/libusb-1.0
+CXX_INCLUDES = -I/home/runner/work/AirUSB/AirUSB/src -I/usr/include/libusb-1.0
 
 CXX_FLAGS = -std=gnu++17
 

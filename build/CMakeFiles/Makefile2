@@ -45,19 +45,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/bin/cmake
+CMAKE_COMMAND = /usr/local/bin/cmake
 
 # The command to remove a file.
-RM = /usr/bin/cmake -E rm -f
+RM = /usr/local/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/qincai/AirUSB
+CMAKE_SOURCE_DIR = /home/runner/work/AirUSB/AirUSB
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/qincai/AirUSB/build
+CMAKE_BINARY_DIR = /home/runner/work/AirUSB/AirUSB/build
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -92,14 +92,14 @@ clean: CMakeFiles/airusb-benchmark.dir/clean
 CMakeFiles/airusb_common.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/airusb_common.dir/build.make CMakeFiles/airusb_common.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/airusb_common.dir/build.make CMakeFiles/airusb_common.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/qincai/AirUSB/build/CMakeFiles --progress-num=9,10 "Built target airusb_common"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/runner/work/AirUSB/AirUSB/build/CMakeFiles --progress-num=9,10 "Built target airusb_common"
 .PHONY : CMakeFiles/airusb_common.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/airusb_common.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/qincai/AirUSB/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/runner/work/AirUSB/AirUSB/build/CMakeFiles 2
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/airusb_common.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/qincai/AirUSB/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/runner/work/AirUSB/AirUSB/build/CMakeFiles 0
 .PHONY : CMakeFiles/airusb_common.dir/rule
 
 # Convenience name for target.
@@ -109,7 +109,7 @@ airusb_common: CMakeFiles/airusb_common.dir/rule
 # codegen rule for target.
 CMakeFiles/airusb_common.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/airusb_common.dir/build.make CMakeFiles/airusb_common.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/qincai/AirUSB/build/CMakeFiles --progress-num=9,10 "Finished codegen for target airusb_common"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/runner/work/AirUSB/AirUSB/build/CMakeFiles --progress-num=9,10 "Finished codegen for target airusb_common"
 .PHONY : CMakeFiles/airusb_common.dir/codegen
 
 # clean rule for target.
@@ -124,14 +124,14 @@ CMakeFiles/airusb_common.dir/clean:
 CMakeFiles/airusb-server.dir/all: CMakeFiles/airusb_common.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/airusb-server.dir/build.make CMakeFiles/airusb-server.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/airusb-server.dir/build.make CMakeFiles/airusb-server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/qincai/AirUSB/build/CMakeFiles --progress-num=6,7,8 "Built target airusb-server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/runner/work/AirUSB/AirUSB/build/CMakeFiles --progress-num=6,7,8 "Built target airusb-server"
 .PHONY : CMakeFiles/airusb-server.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/airusb-server.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/qincai/AirUSB/build/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/runner/work/AirUSB/AirUSB/build/CMakeFiles 5
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/airusb-server.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/qincai/AirUSB/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/runner/work/AirUSB/AirUSB/build/CMakeFiles 0
 .PHONY : CMakeFiles/airusb-server.dir/rule
 
 # Convenience name for target.
@@ -141,7 +141,7 @@ airusb-server: CMakeFiles/airusb-server.dir/rule
 # codegen rule for target.
 CMakeFiles/airusb-server.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/airusb-server.dir/build.make CMakeFiles/airusb-server.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/qincai/AirUSB/build/CMakeFiles --progress-num=6,7,8 "Finished codegen for target airusb-server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/runner/work/AirUSB/AirUSB/build/CMakeFiles --progress-num=6,7,8 "Finished codegen for target airusb-server"
 .PHONY : CMakeFiles/airusb-server.dir/codegen
 
 # clean rule for target.
@@ -156,14 +156,14 @@ CMakeFiles/airusb-server.dir/clean:
 CMakeFiles/airusb-client.dir/all: CMakeFiles/airusb_common.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/airusb-client.dir/build.make CMakeFiles/airusb-client.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/airusb-client.dir/build.make CMakeFiles/airusb-client.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/qincai/AirUSB/build/CMakeFiles --progress-num=3,4,5 "Built target airusb-client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/runner/work/AirUSB/AirUSB/build/CMakeFiles --progress-num=3,4,5 "Built target airusb-client"
 .PHONY : CMakeFiles/airusb-client.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/airusb-client.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/qincai/AirUSB/build/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/runner/work/AirUSB/AirUSB/build/CMakeFiles 5
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/airusb-client.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/qincai/AirUSB/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/runner/work/AirUSB/AirUSB/build/CMakeFiles 0
 .PHONY : CMakeFiles/airusb-client.dir/rule
 
 # Convenience name for target.
@@ -173,7 +173,7 @@ airusb-client: CMakeFiles/airusb-client.dir/rule
 # codegen rule for target.
 CMakeFiles/airusb-client.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/airusb-client.dir/build.make CMakeFiles/airusb-client.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/qincai/AirUSB/build/CMakeFiles --progress-num=3,4,5 "Finished codegen for target airusb-client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/runner/work/AirUSB/AirUSB/build/CMakeFiles --progress-num=3,4,5 "Finished codegen for target airusb-client"
 .PHONY : CMakeFiles/airusb-client.dir/codegen
 
 # clean rule for target.
@@ -188,14 +188,14 @@ CMakeFiles/airusb-client.dir/clean:
 CMakeFiles/airusb-benchmark.dir/all: CMakeFiles/airusb_common.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/airusb-benchmark.dir/build.make CMakeFiles/airusb-benchmark.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/airusb-benchmark.dir/build.make CMakeFiles/airusb-benchmark.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/qincai/AirUSB/build/CMakeFiles --progress-num=1,2 "Built target airusb-benchmark"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/runner/work/AirUSB/AirUSB/build/CMakeFiles --progress-num=1,2 "Built target airusb-benchmark"
 .PHONY : CMakeFiles/airusb-benchmark.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/airusb-benchmark.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/qincai/AirUSB/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/runner/work/AirUSB/AirUSB/build/CMakeFiles 4
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/airusb-benchmark.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/qincai/AirUSB/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/runner/work/AirUSB/AirUSB/build/CMakeFiles 0
 .PHONY : CMakeFiles/airusb-benchmark.dir/rule
 
 # Convenience name for target.
@@ -205,7 +205,7 @@ airusb-benchmark: CMakeFiles/airusb-benchmark.dir/rule
 # codegen rule for target.
 CMakeFiles/airusb-benchmark.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/airusb-benchmark.dir/build.make CMakeFiles/airusb-benchmark.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/qincai/AirUSB/build/CMakeFiles --progress-num=1,2 "Finished codegen for target airusb-benchmark"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/runner/work/AirUSB/AirUSB/build/CMakeFiles --progress-num=1,2 "Finished codegen for target airusb-benchmark"
 .PHONY : CMakeFiles/airusb-benchmark.dir/codegen
 
 # clean rule for target.

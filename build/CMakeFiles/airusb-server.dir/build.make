@@ -44,19 +44,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/bin/cmake
+CMAKE_COMMAND = /usr/local/bin/cmake
 
 # The command to remove a file.
-RM = /usr/bin/cmake -E rm -f
+RM = /usr/local/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/qincai/AirUSB
+CMAKE_SOURCE_DIR = /home/runner/work/AirUSB/AirUSB
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/qincai/AirUSB/build
+CMAKE_BINARY_DIR = /home/runner/work/AirUSB/AirUSB/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/airusb-server.dir/depend.make
@@ -73,32 +73,32 @@ CMakeFiles/airusb-server.dir/codegen:
 .PHONY : CMakeFiles/airusb-server.dir/codegen
 
 CMakeFiles/airusb-server.dir/src/airusb-server.cpp.o: CMakeFiles/airusb-server.dir/flags.make
-CMakeFiles/airusb-server.dir/src/airusb-server.cpp.o: /home/qincai/AirUSB/src/airusb-server.cpp
+CMakeFiles/airusb-server.dir/src/airusb-server.cpp.o: /home/runner/work/AirUSB/AirUSB/src/airusb-server.cpp
 CMakeFiles/airusb-server.dir/src/airusb-server.cpp.o: CMakeFiles/airusb-server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/qincai/AirUSB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/airusb-server.dir/src/airusb-server.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/airusb-server.dir/src/airusb-server.cpp.o -MF CMakeFiles/airusb-server.dir/src/airusb-server.cpp.o.d -o CMakeFiles/airusb-server.dir/src/airusb-server.cpp.o -c /home/qincai/AirUSB/src/airusb-server.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/AirUSB/AirUSB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/airusb-server.dir/src/airusb-server.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/airusb-server.dir/src/airusb-server.cpp.o -MF CMakeFiles/airusb-server.dir/src/airusb-server.cpp.o.d -o CMakeFiles/airusb-server.dir/src/airusb-server.cpp.o -c /home/runner/work/AirUSB/AirUSB/src/airusb-server.cpp
 
 CMakeFiles/airusb-server.dir/src/airusb-server.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/airusb-server.dir/src/airusb-server.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/qincai/AirUSB/src/airusb-server.cpp > CMakeFiles/airusb-server.dir/src/airusb-server.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/AirUSB/AirUSB/src/airusb-server.cpp > CMakeFiles/airusb-server.dir/src/airusb-server.cpp.i
 
 CMakeFiles/airusb-server.dir/src/airusb-server.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/airusb-server.dir/src/airusb-server.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/qincai/AirUSB/src/airusb-server.cpp -o CMakeFiles/airusb-server.dir/src/airusb-server.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/AirUSB/AirUSB/src/airusb-server.cpp -o CMakeFiles/airusb-server.dir/src/airusb-server.cpp.s
 
 CMakeFiles/airusb-server.dir/src/server.cpp.o: CMakeFiles/airusb-server.dir/flags.make
-CMakeFiles/airusb-server.dir/src/server.cpp.o: /home/qincai/AirUSB/src/server.cpp
+CMakeFiles/airusb-server.dir/src/server.cpp.o: /home/runner/work/AirUSB/AirUSB/src/server.cpp
 CMakeFiles/airusb-server.dir/src/server.cpp.o: CMakeFiles/airusb-server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/qincai/AirUSB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/airusb-server.dir/src/server.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/airusb-server.dir/src/server.cpp.o -MF CMakeFiles/airusb-server.dir/src/server.cpp.o.d -o CMakeFiles/airusb-server.dir/src/server.cpp.o -c /home/qincai/AirUSB/src/server.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/AirUSB/AirUSB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/airusb-server.dir/src/server.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/airusb-server.dir/src/server.cpp.o -MF CMakeFiles/airusb-server.dir/src/server.cpp.o.d -o CMakeFiles/airusb-server.dir/src/server.cpp.o -c /home/runner/work/AirUSB/AirUSB/src/server.cpp
 
 CMakeFiles/airusb-server.dir/src/server.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/airusb-server.dir/src/server.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/qincai/AirUSB/src/server.cpp > CMakeFiles/airusb-server.dir/src/server.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/AirUSB/AirUSB/src/server.cpp > CMakeFiles/airusb-server.dir/src/server.cpp.i
 
 CMakeFiles/airusb-server.dir/src/server.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/airusb-server.dir/src/server.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/qincai/AirUSB/src/server.cpp -o CMakeFiles/airusb-server.dir/src/server.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/AirUSB/AirUSB/src/server.cpp -o CMakeFiles/airusb-server.dir/src/server.cpp.s
 
 # Object files for target airusb-server
 airusb__server_OBJECTS = \
@@ -114,7 +114,7 @@ airusb-server: CMakeFiles/airusb-server.dir/build.make
 airusb-server: CMakeFiles/airusb-server.dir/compiler_depend.ts
 airusb-server: libairusb_common.a
 airusb-server: CMakeFiles/airusb-server.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/qincai/AirUSB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable airusb-server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/runner/work/AirUSB/AirUSB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable airusb-server"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/airusb-server.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -126,6 +126,6 @@ CMakeFiles/airusb-server.dir/clean:
 .PHONY : CMakeFiles/airusb-server.dir/clean
 
 CMakeFiles/airusb-server.dir/depend:
-	cd /home/qincai/AirUSB/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/qincai/AirUSB /home/qincai/AirUSB /home/qincai/AirUSB/build /home/qincai/AirUSB/build /home/qincai/AirUSB/build/CMakeFiles/airusb-server.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /home/runner/work/AirUSB/AirUSB/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/runner/work/AirUSB/AirUSB /home/runner/work/AirUSB/AirUSB /home/runner/work/AirUSB/AirUSB/build /home/runner/work/AirUSB/AirUSB/build /home/runner/work/AirUSB/AirUSB/build/CMakeFiles/airusb-server.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/airusb-server.dir/depend
 

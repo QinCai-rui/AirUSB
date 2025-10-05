@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/qincai/AirUSB/tests/benchmark.cpp" "CMakeFiles/airusb-benchmark.dir/tests/benchmark.cpp.o" "gcc" "CMakeFiles/airusb-benchmark.dir/tests/benchmark.cpp.o.d"
+  "/home/runner/work/AirUSB/AirUSB/tests/benchmark.cpp" "CMakeFiles/airusb-benchmark.dir/tests/benchmark.cpp.o" "gcc" "CMakeFiles/airusb-benchmark.dir/tests/benchmark.cpp.o.d"
   "" "airusb-benchmark" "gcc" "CMakeFiles/airusb-benchmark.dir/link.d"
   )
 

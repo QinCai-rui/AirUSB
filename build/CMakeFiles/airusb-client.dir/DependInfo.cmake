@@ -8,8 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/qincai/AirUSB/src/airusb-client.cpp" "CMakeFiles/airusb-client.dir/src/airusb-client.cpp.o" "gcc" "CMakeFiles/airusb-client.dir/src/airusb-client.cpp.o.d"
-  "/home/qincai/AirUSB/src/client.cpp" "CMakeFiles/airusb-client.dir/src/client.cpp.o" "gcc" "CMakeFiles/airusb-client.dir/src/client.cpp.o.d"
+  "/home/runner/work/AirUSB/AirUSB/src/airusb-client.cpp" "CMakeFiles/airusb-client.dir/src/airusb-client.cpp.o" "gcc" "CMakeFiles/airusb-client.dir/src/airusb-client.cpp.o.d"
+  "/home/runner/work/AirUSB/AirUSB/src/client.cpp" "CMakeFiles/airusb-client.dir/src/client.cpp.o" "gcc" "CMakeFiles/airusb-client.dir/src/client.cpp.o.d"
   "" "airusb-client" "gcc" "CMakeFiles/airusb-client.dir/link.d"
   )
 
