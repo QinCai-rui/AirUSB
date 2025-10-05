@@ -124,12 +124,13 @@ private:
     
     std::mutex devices_mutex_;
     std::unordered_map<uint32_t, std::shared_ptr<VirtualUsbDevice>> kernel_devices_;
+    std::unordered_map<uint32_t, int> vhci_port_map_; // Maps device_id to vhci port
     
-    // Kernel interface functions
-    bool load_kernel_module();
-    void unload_kernel_module();
-    bool create_hcd_device();
-    void destroy_hcd_device();
+    // USB/IP vhci_hcd interface functions
+    bool check_vhci_hcd_loaded();
+    int find_free_vhci_port();
+    bool attach_to_vhci(std::shared_ptr<VirtualUsbDevice> device);
+    bool detach_from_vhci(uint32_t device_id);
 };
 
 // WiFi 6E optimization features

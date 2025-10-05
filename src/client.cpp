@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include <cstring>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <algorithm>
 #include <thread>
 #include <chrono>
@@ -217,10 +219,33 @@ bool UsbClient::attach_device(uint32_t device_id) {
     request.add_payload(device_id);
     
     if (!send_message(request)) {
+        std::cerr << "Failed to send attach request" << std::endl;
         return false;
     }
     
-    // For now, assume success - in real implementation we'd wait for response
+    // Wait for attach response from server
+    Message response;
+    if (!receive_message(response)) {
+        std::cerr << "Failed to receive attach response" << std::endl;
+        return false;
+    }
+    
+    if (response.header.type != MessageType::DEVICE_ATTACH_RESPONSE) {
+        std::cerr << "Unexpected response type: " << static_cast<int>(response.header.type) << std::endl;
+        return false;
+    }
+    
+    if (response.payload.size() < sizeof(uint32_t)) {
+        std::cerr << "Invalid attach response payload" << std::endl;
+        return false;
+    }
+    
+    uint32_t success = *reinterpret_cast<const uint32_t*>(response.payload.data());
+    if (!success) {
+        std::cerr << "Server failed to attach device" << std::endl;
+        return false;
+    }
+    
     return true;
 }
 
@@ -449,7 +474,7 @@ void NetworkOptimizer::enable_multipath_tcp(int socket_fd) {
     setsockopt(socket_fd, IPPROTO_TCP, TCP_ULP, "mptcp", 5);
 }
 
-// KernelUsbDriver implementation (simplified)
+// KernelUsbDriver implementation using USB/IP vhci_hcd
 KernelUsbDriver::KernelUsbDriver() : kernel_initialized_(false), hcd_driver_(nullptr) {
 }
 
@@ -460,9 +485,14 @@ KernelUsbDriver::~KernelUsbDriver() {
 bool KernelUsbDriver::initialize() {
     if (kernel_initialized_) return true;
     
-    // In a real implementation, this would load the kernel module
-    // and create the HCD (Host Controller Driver) interface
     std::cout << "Initializing kernel USB driver interface" << std::endl;
+    
+    // Check if vhci_hcd module is loaded
+    if (!check_vhci_hcd_loaded()) {
+        std::cerr << "Warning: vhci_hcd kernel module not loaded" << std::endl;
+        std::cerr << "Please load it with: sudo modprobe vhci-hcd" << std::endl;
+        // Continue anyway for systems where it may load automatically
+    }
     
     kernel_initialized_ = true;
     return true;
@@ -471,9 +501,12 @@ bool KernelUsbDriver::initialize() {
 void KernelUsbDriver::cleanup() {
     if (!kernel_initialized_) return;
     
-    // Unregister all devices
+    // Detach all registered devices
     {
         std::lock_guard<std::mutex> lock(devices_mutex_);
+        for (const auto& pair : kernel_devices_) {
+            detach_from_vhci(pair.first);
+        }
         kernel_devices_.clear();
     }
     
@@ -484,11 +517,23 @@ void KernelUsbDriver::cleanup() {
 bool KernelUsbDriver::register_device(std::shared_ptr<VirtualUsbDevice> device) {
     if (!kernel_initialized_) return false;
     
+    const DeviceInfo& info = device->get_info();
+    
+    // Attach device to vhci_hcd
+    if (!attach_to_vhci(device)) {
+        std::cerr << "Failed to attach device " << device->get_device_id() 
+                  << " to vhci_hcd" << std::endl;
+        return false;
+    }
+    
     std::lock_guard<std::mutex> lock(devices_mutex_);
     kernel_devices_[device->get_device_id()] = device;
     
-    std::cout << "Registered virtual USB device " << device->get_device_id() 
-              << " with kernel" << std::endl;
+    std::cout << "Virtual USB device registered with kernel" << std::endl;
+    std::cout << "  Device ID: " << device->get_device_id() << std::endl;
+    std::cout << "  Busid: " << info.busid << std::endl;
+    std::cout << "  Vendor: " << std::hex << info.vendor_id << std::dec << std::endl;
+    std::cout << "  Product: " << std::hex << info.product_id << std::dec << std::endl;
     
     return true;
 }
@@ -499,6 +544,7 @@ bool KernelUsbDriver::unregister_device(uint32_t device_id) {
     std::lock_guard<std::mutex> lock(devices_mutex_);
     auto it = kernel_devices_.find(device_id);
     if (it != kernel_devices_.end()) {
+        detach_from_vhci(device_id);
         kernel_devices_.erase(it);
         std::cout << "Unregistered virtual USB device " << device_id 
                   << " from kernel" << std::endl;
@@ -506,6 +552,119 @@ bool KernelUsbDriver::unregister_device(uint32_t device_id) {
     }
     
     return false;
+}
+
+bool KernelUsbDriver::check_vhci_hcd_loaded() {
+    // Check if vhci_hcd sysfs directory exists
+    std::ifstream status("/sys/devices/platform/vhci_hcd.0/status");
+    if (!status.is_open()) {
+        // Try alternative paths
+        status.open("/sys/devices/platform/vhci_hcd/status");
+    }
+    return status.is_open();
+}
+
+int KernelUsbDriver::find_free_vhci_port() {
+    std::ifstream status("/sys/devices/platform/vhci_hcd.0/status");
+    if (!status.is_open()) {
+        status.open("/sys/devices/platform/vhci_hcd/status");
+    }
+    
+    if (!status.is_open()) {
+        std::cerr << "Failed to open vhci_hcd status file" << std::endl;
+        return -1;
+    }
+    
+    std::string line;
+    // Skip header lines
+    std::getline(status, line);
+    std::getline(status, line);
+    
+    int port = 0;
+    while (std::getline(status, line)) {
+        // Status format: "port sta spd dev sockfd local_busid"
+        // We're looking for ports with status "4" (available)
+        std::istringstream iss(line);
+        int port_num, sta;
+        if (iss >> port_num >> sta) {
+            if (sta == 4) { // USB_PORT_STAT_AVAILABLE
+                return port_num;
+            }
+        }
+        port++;
+    }
+    
+    return -1;
+}
+
+bool KernelUsbDriver::attach_to_vhci(std::shared_ptr<VirtualUsbDevice> device) {
+    const DeviceInfo& info = device->get_info();
+    
+    // Find a free vhci port
+    int port = find_free_vhci_port();
+    if (port < 0) {
+        std::cerr << "No free vhci ports available" << std::endl;
+        return false;
+    }
+    
+    // Write to vhci_hcd attach file
+    // Format: port devid speed
+    // Where devid is (busnum << 16) | devnum
+    uint32_t devid = (info.bus_num << 16) | info.device_num;
+    uint32_t speed = info.device_speed;
+    
+    std::ofstream attach("/sys/devices/platform/vhci_hcd.0/attach");
+    if (!attach.is_open()) {
+        attach.open("/sys/devices/platform/vhci_hcd/attach");
+    }
+    
+    if (!attach.is_open()) {
+        std::cerr << "Failed to open vhci_hcd attach file" << std::endl;
+        std::cerr << "Make sure you have the necessary permissions (try with sudo)" << std::endl;
+        return false;
+    }
+    
+    attach << port << " " << devid << " " << speed << std::endl;
+    attach.close();
+    
+    if (attach.fail()) {
+        std::cerr << "Failed to write to vhci_hcd attach file" << std::endl;
+        return false;
+    }
+    
+    // Store the port number for later detachment
+    vhci_port_map_[device->get_device_id()] = port;
+    
+    std::cout << "Attached device to vhci port " << port << std::endl;
+    return true;
+}
+
+bool KernelUsbDriver::detach_from_vhci(uint32_t device_id) {
+    auto it = vhci_port_map_.find(device_id);
+    if (it == vhci_port_map_.end()) {
+        return false;
+    }
+    
+    int port = it->second;
+    
+    // Write to vhci_hcd detach file
+    std::ofstream detach("/sys/devices/platform/vhci_hcd.0/detach");
+    if (!detach.is_open()) {
+        detach.open("/sys/devices/platform/vhci_hcd/detach");
+    }
+    
+    if (!detach.is_open()) {
+        std::cerr << "Failed to open vhci_hcd detach file" << std::endl;
+        return false;
+    }
+    
+    detach << port << std::endl;
+    detach.close();
+    
+    vhci_port_map_.erase(it);
+    
+    std::cout << "Detached device from vhci port " << port << std::endl;
+    return true;
 }
 
 } // namespace airusb

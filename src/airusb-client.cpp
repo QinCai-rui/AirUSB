@@ -77,32 +77,65 @@ int main(int argc, char* argv[]) {
     
     if (!attach_busid.empty()) {
         std::cout << "Looking up device with busid " << attach_busid << "..." << std::endl;
-        uint32_t device_id = client.find_device_by_busid(attach_busid);
-        if (device_id > 0) {
-            std::cout << "Attaching device " << device_id << " (busid: " << attach_busid << ")..." << std::endl;
-            if (client.attach_device(device_id)) {
+        
+        // First get the device list to find device info
+        auto devices = client.list_devices();
+        DeviceInfo target_device;
+        bool found = false;
+        
+        for (const auto& device : devices) {
+            if (std::string(device.busid) == attach_busid) {
+                target_device = device;
+                found = true;
+                break;
+            }
+        }
+        
+        if (!found) {
+            std::cerr << "Device with busid " << attach_busid << " not found" << std::endl;
+            client.disconnect();
+            return 1;
+        }
+        
+        uint32_t device_id = target_device.device_id;
+        std::cout << "Attaching device " << device_id << " (busid: " << attach_busid << ")..." << std::endl;
+        
+        if (client.attach_device(device_id)) {
             std::cout << "Device attached successfully" << std::endl;
+            
+            // Create virtual USB device
+            auto virtual_device = std::make_shared<VirtualUsbDevice>(target_device, -1); // Socket will be managed by client
             
             // Initialize kernel driver interface
             KernelUsbDriver kernel_driver;
-            if (kernel_driver.initialize()) {
-                // In a complete implementation, we'd register the virtual device
-                // with the kernel and keep the client running
-                std::cout << "Virtual USB device registered with kernel" << std::endl;
+            if (!kernel_driver.initialize()) {
+                std::cerr << "Failed to initialize kernel driver interface" << std::endl;
+                client.detach_device(device_id);
+                client.disconnect();
+                return 1;
+            }
+            
+            // Register virtual device with kernel
+            if (kernel_driver.register_device(virtual_device)) {
+                std::cout << "\nDevice is now available on this system!" << std::endl;
+                std::cout << "You can check with: lsusb or lsblk" << std::endl;
                 std::cout << "Press Ctrl+C to detach and exit" << std::endl;
                 
-                // Keep running
+                // Keep running and handle device I/O
                 while (client.is_connected()) {
                     std::this_thread::sleep_for(std::chrono::seconds(1));
                 }
+                
+                // Cleanup
+                kernel_driver.unregister_device(device_id);
             } else {
-                std::cerr << "Failed to initialize kernel driver interface" << std::endl;
-            }
-            } else {
-                std::cerr << "Failed to attach device" << std::endl;
+                std::cerr << "Failed to register virtual USB device with kernel" << std::endl;
+                std::cerr << "Make sure vhci_hcd module is loaded: sudo modprobe vhci-hcd" << std::endl;
+                std::cerr << "And you have appropriate permissions (try with sudo)" << std::endl;
+                client.detach_device(device_id);
             }
         } else {
-            std::cerr << "Device with busid " << attach_busid << " not found" << std::endl;
+            std::cerr << "Failed to attach device" << std::endl;
         }
     }
     
