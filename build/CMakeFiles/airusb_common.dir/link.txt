@@ -1,0 +1,2 @@
+/usr/bin/ar qc libairusb_common.a CMakeFiles/airusb_common.dir/src/protocol.cpp.o
+/usr/bin/ranlib libairusb_common.a

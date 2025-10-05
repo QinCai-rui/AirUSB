@@ -1,0 +1,35 @@
+# udev rules for AirUSB - automatic USB device detection and optimization
+# Place this file in /etc/udev/rules.d/
+
+# Set USB device permissions for AirUSB
+SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", GROUP="airusb", MODE="0664"
+
+# Optimize USB devices for high-speed transfer
+SUBSYSTEM=="usb", ATTR{bDeviceClass}=="09", ATTR{bMaxPacketSize0}=="64", RUN+="/usr/local/bin/optimize-usb-for-airusb.sh %k"
+
+# High-speed USB devices (USB 2.0/3.0/3.1)
+SUBSYSTEM=="usb", ATTR{speed}=="480", TAG+="airusb-highspeed"
+SUBSYSTEM=="usb", ATTR{speed}=="5000", TAG+="airusb-superspeed"
+SUBSYSTEM=="usb", ATTR{speed}=="10000", TAG+="airusb-superspeed-plus"
+
+# Mass storage devices - optimize for bulk transfers
+SUBSYSTEM=="usb", ATTR{bDeviceClass}=="08", ENV{ID_USB_DRIVER}=="usb-storage", TAG+="airusb-storage"
+
+# HID devices - optimize for low latency
+SUBSYSTEM=="usb", ATTR{bDeviceClass}=="03", TAG+="airusb-hid"
+
+# Audio devices - optimize for isochronous transfers
+SUBSYSTEM=="usb", ATTR{bDeviceClass}=="01", TAG+="airusb-audio"
+
+# Video devices - optimize for high bandwidth
+SUBSYSTEM=="usb", ATTR{bDeviceClass}=="0e", TAG+="airusb-video"
+
+# Network devices - avoid conflicts
+SUBSYSTEM=="usb", ATTR{bDeviceClass}=="02", ENV{ID_USB_DRIVER}=="cdc_ether", TAG+="airusb-exclude"
+
+# Bluetooth devices - avoid conflicts  
+SUBSYSTEM=="usb", ATTR{bDeviceClass}=="e0", ATTR{bDeviceSubClass}=="01", TAG+="airusb-exclude"
+
+# Automatically start AirUSB server when high-speed USB devices are connected
+ACTION=="add", TAG=="airusb-highspeed", RUN+="/bin/systemctl start airusb-server.service"
+ACTION=="add", TAG=="airusb-superspeed", RUN+="/bin/systemctl start airusb-server.service"

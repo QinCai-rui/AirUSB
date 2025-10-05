@@ -1,0 +1,1 @@
+/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/airusb-server.dir/link.d "CMakeFiles/airusb-server.dir/src/airusb-server.cpp.o" "CMakeFiles/airusb-server.dir/src/server.cpp.o" -o airusb-server  libairusb_common.a -lpthread -lusb-1.0 -lz

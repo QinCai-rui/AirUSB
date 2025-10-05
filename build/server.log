@@ -1,0 +1,21 @@
+AirUSB Server - High-speed USB over WiFi 6E
+=============================================
+Found 11 USB devices
+AirUSB server started on port 3243
+Server running. Press Ctrl+C to stop.
+Client connected from 127.0.0.1
+Client disconnected
+
+Received signal 15, shutting down...
+libusb: warning [libusb_exit] device 7.1 still referenced
+libusb: warning [libusb_exit] device 6.1 still referenced
+libusb: warning [libusb_exit] device 1.1 still referenced
+libusb: warning [libusb_exit] device 5.6 still referenced
+libusb: warning [libusb_exit] device 5.1 still referenced
+libusb: warning [libusb_exit] device 4.5 still referenced
+libusb: warning [libusb_exit] device 4.1 still referenced
+libusb: warning [libusb_exit] device 3.2 still referenced
+libusb: warning [libusb_exit] device 3.1 still referenced
+libusb: warning [libusb_exit] device 2.2 still referenced
+libusb: warning [libusb_exit] device 2.1 still referenced
+AirUSB server stopped
